@@ -1,12 +1,13 @@
 var express = require('express');
+const {checkAuth} = require('../middleware/auth');
 var router = express.Router();
 /* GET users listing. */
-router.post('/', function(req, res, next) {
-  console.log(req.body.username , req.body.password);
+router.post('/', checkAuth, function(req, res, next) {
   
+
   res.json({
-      message: 'dang nhap thanh cong',
-      token: 'abc'
+      message: 'data',
+      money: 'abc'
   })
 });
 
