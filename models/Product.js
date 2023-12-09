@@ -2,7 +2,10 @@ const mongoose = require('../config/dbConnect')
 
 const productSchema = new mongoose.Schema({
     name: String,
-    service: String,
+    category: {
+        type:   mongoose.SchemaTypes.ObjectId,
+        ref: 'Category'
+    },
     price: {
         type: Number,
         min: 0,

@@ -1,13 +1,13 @@
 var express = require('express');
 var router = express.Router();
-const {login} = require('../services/auth')
-const {createUser} = require('../services/user')
+const {createUser, getUsers} = require('../services/user')
 
-/* GET users listing. */
-router.post('/',async function(req, res, next) {
+router.get('/', async (req, res, next)=>{
   try {
-    let data = await login(req.body)
-    res.json(data)
+    let rs = await getUsers(+req.query.page, +req.query.size, req.query.search)
+    if(rs.status === 200){
+      return res.json(rs.data)
+    }
   } catch (error) {
     if(error.status === 400){
       return res.status(400).json(error.message)
@@ -16,10 +16,11 @@ router.post('/',async function(req, res, next) {
       return res.status(500).json('Loi he thong')
     }
   }
-});
 
-router.post('/register', async function(req, res, next) {
-  
+})
+
+
+router.post('/', async function(req, res, next) {
   try {
     let rs = await createUser(req.body)
   
@@ -34,6 +35,9 @@ router.post('/register', async function(req, res, next) {
     }
   }
 });
+
+
+
 
 
 module.exports = router;

@@ -4,37 +4,6 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs'); 
 const path = require('path')
 const privateKey = fs.readFileSync(path.join(__dirname, '../key/private-key.pem'), 'utf8');
-async function createUser(user){
-    const { email, password, name } = user;
-
-    // Kiểm tra xem email đã tồn tại chưa
-    const existingUser = await UserModel.findOne({ email });
-
-    if (existingUser) {
-        throw {
-            status: 400,
-            message: 'Email da ton tai'
-        }
-    }
-
-    // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Tạo một người dùng mới
-    const newUser = new UserModel({
-        email,
-        password: hashedPassword,
-        name
-    });
-
-    // Lưu người dùng vào cơ sở dữ liệu
-    await newUser.save();
-
-    return {
-        status: 200,
-        message: 'Tao thanh cong'
-    }
-}
 
 async function login(data){
     const { email, password } = data;
@@ -64,6 +33,5 @@ async function login(data){
 
 
 module.exports = {
-    createUser,
     login
 }
