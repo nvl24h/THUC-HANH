@@ -2,6 +2,7 @@ const UserModel = require('../models/User')
 const bcrypt = require('bcrypt')
 
 async function getUsers(page=1, size=10, searchTxt=''){
+    
     let skip = (page - 1) * size
     let condition = {}
     if(searchTxt){

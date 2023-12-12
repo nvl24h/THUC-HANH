@@ -4,7 +4,7 @@ const {login} = require('../services/auth')
 const {createUser} = require('../services/user')
 
 /* GET users listing. */
-router.post('/',async function(req, res, next) {
+router.post('/login',async function(req, res, next) {
   try {
     let data = await login(req.body)
     res.json(data)

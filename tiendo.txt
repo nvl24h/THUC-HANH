@@ -1,0 +1,9 @@
+Router -> Middleware => Service => Model
+
+
+Dang nhap
+Dang ky
+Xac thuc tai khoan
+
+Tao Product
+Tao order
