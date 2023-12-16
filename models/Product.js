@@ -2,6 +2,7 @@ const mongoose = require('../config/dbConnect')
 
 const productSchema = new mongoose.Schema({
     name: String,
+    featureImg: String,
     category: {
         type:   mongoose.SchemaTypes.ObjectId,
         ref: 'Category'

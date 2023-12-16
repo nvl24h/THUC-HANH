@@ -20,7 +20,7 @@ router.get('/', async (req, res, next)=>{
 })
 
 
-router.post('/', async function(req, res, next) {
+router.post('/' , async function(req, res, next) {
   try {
     let rs = await createUser(req.body)
   
@@ -31,13 +31,11 @@ router.post('/', async function(req, res, next) {
     if(error.status === 400){
       return res.status(400).json(error.message)
     }else{
-      return res.status(500).json('Loi he thong')
+      console.log(error);
+      return res.status(500).json('Loi he thongaaa')
     }
   }
 });
-
-
-
 
 
 module.exports = router;

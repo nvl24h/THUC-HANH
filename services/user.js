@@ -30,8 +30,12 @@ async function getUsers(page=1, size=10, searchTxt=''){
     }
 }
 
-async function createUser(user){
+async function createUser(user, image1){
     const { email, password, name } = user;
+    const image = image1.filename
+
+    
+    console.log(email,password);
     const existingUser = await UserModel.findOne({ email });
 
     if (existingUser) {
@@ -45,7 +49,8 @@ async function createUser(user){
     const newUser = new UserModel({
         email,
         password: hashedPassword,
-        name
+        name,
+        image
     });
     await newUser.save();
     return {
