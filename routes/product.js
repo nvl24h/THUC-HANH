@@ -3,7 +3,7 @@ const path = require('path')
 const {checkAuth} = require('../middleware/auth');
 var router = express.Router();
 var slug = require('slug')
-const {addProduct, putProduct, deleteProduct} = require('../services/product')
+const {addProduct, putProduct, deleteProduct, getProducts} = require('../services/product')
 const multer  = require('multer');
 const { error } = require('console');
 const storage = multer.diskStorage({
@@ -20,6 +20,25 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
+router.get('/', async (req, res, next) => {
+  try {
+    const page = await req.query.page
+
+    if (page) {
+      const getData = await getProducts(page)
+      return res.json({
+        status: 200,
+        message: getData
+      })
+    }else {
+      return res.status(400).json('thong tin product khong hop le:: getproduct') 
+    }
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json('loi he thong:: get product') 
+  }
+})
 
 /* GET users listing. */
 router.post('/', checkAuth, upload.single('featureImg'), async function(req, res, next) {
@@ -68,12 +87,12 @@ router.put('/', checkAuth,upload.single('featureImg'), async (req, res, next) =>
   }
 })
 
-router.delete('/', checkAuth, (req, res, next) => {
+router.delete('/', checkAuth, async (req, res, next) => {
   try {
-    const { idData } = req.query
+    const { idData } = await req.query
 
     if (idData) {
-      const detedataPd =  deleteProduct(idData)
+      const detedataPd = await deleteProduct(idData)
       return res.json({
         status: 200,
         message: detedataPd

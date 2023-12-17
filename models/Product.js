@@ -5,7 +5,7 @@ const productSchema = new mongoose.Schema({
     featureImg: String,
     category: {
         type:   mongoose.SchemaTypes.ObjectId,
-        ref: 'Category'
+        ref: 'Category',
     },
     price: {
         type: Number,
