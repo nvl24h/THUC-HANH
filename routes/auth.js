@@ -19,6 +19,7 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({ storage: storage })
+
 /* GET users listing. */
 router.post('/login',async function(req, res, next) {
   try {
@@ -44,7 +45,6 @@ router.post('/register', upload.single('image'),async function(req, res, next) {
       return res.json(rs)
     }
   } catch (error) {
-    console.log(error);
     if(error.status === 400){
       return res.status(400).json(error.message)
     }else{
