@@ -8,13 +8,13 @@ const slug = require('slug')
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../public/uploads'))
+    cb(null, path.join(__dirname, '../public/uploads/avatars'))
   },
   filename: function (req, file, cb) {
     // console.log(file.originalname.split('.'));
     let fileImage = file.originalname.split('.')
 
-    cb(null,slug(fileImage[0])+ '.' +fileImage[1])
+    cb(null, slug(fileImage[0])+ '.' +fileImage[1])
   }
 })
 

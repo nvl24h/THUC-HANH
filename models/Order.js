@@ -24,11 +24,28 @@ const orderSchema = new mongoose.Schema({
             default: 0
         }
     }]
+}, {
+    toObject: { virtuals: true },
+    toJSON: {
+        virtuals: true,
+        transform: (doc, ret) => {
+            let totalPrice = 0
+          ret.items = ret.items.map(item => {
+            totalPrice += (item.price * item.quantity) - item.discount
+            return {
+              ...item,
+              finalPrice: (item.price * item.quantity) - item.discount,
+            };
+          });
+
+          ret.totalPrice = totalPrice
+          
+          return ret;
+        },
+      },
+    getters: true,
 });
 
-orderSchema.virtual('items.totalPrice').get(function () {
-    return (this.price * this.quantity) - this.discount;
-});
 
 const OrderModel = mongoose.model('Order', orderSchema);
 

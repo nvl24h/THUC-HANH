@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
     let fileName = file.originalname.split('.')
     // console.log(fileName[1]);
     // console.log(file.originalname.split('.'));
-    cb(null,slug(fileName[0])+ '.' +fileName[1])
+    cb(null, slug(fileName[0]) + '.' +fileName[1])
   }
 })
 
@@ -44,7 +44,7 @@ router.get('/', async (req, res, next) => {
 router.post('/', checkAuth, upload.single('featureImg'), async function(req, res, next) {
   try {
     let {name, category, price, file} = await req.body
-    let featureImg = req.file.filename
+    let featureImg = '/uploads/' + req.file.filename
 
     if (name && category && price) {
         const add = await addProduct({name, category, price, featureImg})
@@ -66,7 +66,7 @@ router.post('/', checkAuth, upload.single('featureImg'), async function(req, res
 router.put('/', checkAuth,upload.single('featureImg'), async (req, res, next) => {
   try {
     let {name, category, price, file} = await req.body
-    let featureImg = req.file ? req.file.filename : undefined;
+    let featureImg = req.file ? '/uploads/' + req.file.filename : undefined;
     let {idProduct} = req.query
     console.log(name, category, price, file);
 

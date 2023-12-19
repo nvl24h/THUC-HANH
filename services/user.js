@@ -32,7 +32,7 @@ async function getUsers(page=1, size=10, searchTxt=''){
 
 async function createUser(user, image1){
     const { email, password, name } = user;
-    const image = image1.filename
+    const image = `/uploads/avatars/${image1.filename}`
 
     
     console.log(email,password);
