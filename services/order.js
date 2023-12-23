@@ -1,5 +1,6 @@
 const OrderModel = require('../models/Order')
 const ProductModel = require('../models/Product')
+const { ObjectID } = require('mongodb')
 function timGia(id, listFormDB){
     let findProduct = listFormDB.find(element => {
         return element._id == id
@@ -8,7 +9,7 @@ function timGia(id, listFormDB){
     return findProduct.price
 }
 async function getAllOrder(){
-    return OrderModel.find({})
+    return OrderModel.find({}).populate('items.idProduct')
 }
 
 async function addOrder(customer, items){
@@ -33,7 +34,25 @@ async function addOrder(customer, items){
     })
 }
 
+async function editOder(orderID, productID, updatedProduct) {
+
+    let data = await  OrderModel.updateOne(
+        { "_id": orderID, "items._id": productID }, 
+        {
+            $set: {
+                "items.$.quantity": updatedProduct.quantity,
+                "items.$.discount": updatedProduct.discount
+            }
+        }
+    );
+
+    // let removeOd = await  OrderModel.deleteOne()
+
+    return data
+}
+
 module.exports = {
     addOrder,
-    getAllOrder
+    getAllOrder,
+    editOder
 }
