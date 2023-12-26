@@ -21,6 +21,9 @@ passport.use(new FacebookStrategy({
 },
 function(accessToken, refreshToken, profile, cb) {
   console.log(profile)
+  return cb(null, {
+    id: profile.id
+  });
   // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
   //   return cb(err, user);
   // });
@@ -48,6 +51,7 @@ app.get('/auth/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
+    console.log('dang nhap thanh cong');
     res.redirect('/');
   });
 
