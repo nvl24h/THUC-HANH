@@ -9,9 +9,33 @@ var authRouter = require('./routes/auth');
 var orderRouter = require('./routes/order');
 var userRouter = require('./routes/user');
 var productRouter = require('./routes/product');
-
+var session = require('express-session')
 var app = express();
 var FacebookStrategy = require('passport-facebook');
+
+
+
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// 1
+app.get('/auth/facebook',
+  passport.authenticate('facebook'));
+
 
 // ------- 2
 passport.use(new FacebookStrategy({
@@ -30,42 +54,30 @@ function(accessToken, refreshToken, profile, cb) {
 }
 ));
 
+// 3
+passport.serializeUser(function(data, cb) {
+  process.nextTick(function() {
+    cb(null, { data: data });
+  });
+})
 
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+passport.deserializeUser(function(user, cb) {
+  process.nextTick(function() {
+    return cb(null, user);
+  });
+});
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-// 1
-app.get('/auth/facebook',
-  passport.authenticate('facebook'));
-
-  //3
+  //4
 app.get('/auth/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
+    
     // Successful authentication, redirect home.
     console.log('dang nhap thanh cong');
-    res.redirect('/');
-  });
-
-
-
-
-
-
-
-
-
-
-
-
+    res.json(req.user);
+});
+  
 
 
 app.use('/', indexRouter);
