@@ -11,7 +11,7 @@ var userRouter = require('./routes/user');
 var productRouter = require('./routes/product');
 
 var app = express();
-
+var FacebookStrategy = require('passport-facebook');
 
 // ------- 2
 passport.use(new FacebookStrategy({
